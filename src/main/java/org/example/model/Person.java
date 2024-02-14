@@ -17,18 +17,9 @@ public class Person {
     private String name;
     @Column(name = "age")
     private int age;
-
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
-    @OneToMany(mappedBy = "owner")
+    @OneToOne(mappedBy = "person")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    private List<Item> items;
+    private Passport passport;
     public Person() {
     }
     public Person(String name, int age) {
@@ -37,6 +28,15 @@ public class Person {
     }
     public int getId() {
         return id;
+    }
+
+    public Passport getPassport() {
+        return passport;
+    }
+
+    public void setPassport(Passport passport) {
+        this.passport = passport;
+        passport.setPerson(this);
     }
 
     public void setId(int id) {
@@ -58,14 +58,6 @@ public class Person {
     public void setAge(int age) {
         this.age = age;
     }
-
-    public void addItem(Item item){
-        if (this.items==null)
-            this.items=new ArrayList<>();
-        this.items.add(item);
-        item.setOwner(this);
-    }
-
     @Override
     public String toString() {
         return "Person{" +
